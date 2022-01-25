@@ -22,9 +22,15 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       HomeScreenInitEvent event,
       Emitter<HomeScreenState> emit,
       ) async {
+    emit(
+        state.copyWith(
+          status: HomeScreenStatus.loading,
+        )
+    );
     List<Album>? albums = await _homeScreenRepository.getAlbums();
     emit(
         state.copyWith(
+          status: HomeScreenStatus.success,
           albums: albums,
         )
     );
@@ -35,18 +41,24 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       Emitter<HomeScreenState> emit,
       ) async {
     final artistId = event.artistId;
+    emit(
+        state.copyWith(
+          status: HomeScreenStatus.loading,
+        )
+    );
 
-    List<String> _favorites = [];
+    List<num> _favorites = [];
     _favorites.addAll(state.favorites);
 
     if (_favorites.contains(artistId)) {
       _favorites.remove(artistId);
     } else {
-      _favorites.add(artistId);
+      _favorites.add(artistId ?? 0);
     }
 
     emit(
         state.copyWith(
+          status: HomeScreenStatus.success,
           favorites: _favorites,
         )
     );

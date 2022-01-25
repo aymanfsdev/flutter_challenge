@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 DateFormat dateFormat = DateFormat('yyyy-MM-ddThh:mm:ssZ');
+DateFormat simpleFormat = DateFormat('MMM d, yyyy');
 
 class Album extends Equatable{
 

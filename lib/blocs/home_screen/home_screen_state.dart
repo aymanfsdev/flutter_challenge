@@ -1,19 +1,20 @@
 part of 'home_screen_bloc.dart';
 
+enum HomeScreenStatus { initial, loading, success, failure }
 class HomeScreenState extends Equatable {
   const HomeScreenState({
-    this.status = false,
+    this.status = HomeScreenStatus.initial,
     this.favorites = const [],
     this.albums = const [],
   });
 
-  final bool status;
-  final List<String> favorites;
+  final HomeScreenStatus status;
+  final List<num> favorites;
   final List<Album> albums;
 
   HomeScreenState copyWith({
-    bool? status,
-    List<String>? favorites,
+    HomeScreenStatus? status,
+    List<num>? favorites,
     List<Album>? albums,
   }) {
     return HomeScreenState(
