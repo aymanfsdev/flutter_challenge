@@ -8,3 +8,12 @@ abstract class HomeScreenEvent extends Equatable {
 }
 
 class HomeScreenInitEvent extends HomeScreenEvent {}
+
+class HomeScreenFavoriteEvent extends HomeScreenEvent {
+  const HomeScreenFavoriteEvent(this.artistId);
+
+  final String artistId;
+
+  @override
+  List<Object> get props => [artistId];
+}

@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'api_config.dart' as config;
 import 'exceptions/api_exception.dart';
 
@@ -11,6 +11,18 @@ enum ClientMethod { get }
 /// performs default behaviours such as JSON encoding
 /// of maps and the inclusion of auth headers automatically.
 class Client {
+  static late Dio _dio;
+  Client() {
+    BaseOptions options = BaseOptions(
+        baseUrl: baseUrl,
+        receiveDataWhenStatusError: true,
+        connectTimeout: 15*1000,
+        receiveTimeout: 15*1000
+    );
+
+    _dio = Dio(options);
+
+  }
   /// The base URL for all API requests.
   static String get baseUrl => config.apiBaseUri;
 
@@ -41,17 +53,17 @@ class Client {
   /// Throws `ApiException` if a non-200 response is received.
   static Future<Map<String, dynamic>> _sendRequest(ClientMethod method, String uri,
       Map<String, dynamic>? body, Map<String, String> headers) async {
-    http.Response response;
+    Response response;
     switch (method) {
       case ClientMethod.get:
-        Uri target = _composeApiTarget(uri, body: body);
-        response = await http.get(target, headers: headers);
+        String target = _composeApiTarget(uri);
+        response = await _dio.get(target, queryParameters: body);
         break;
     }
 
     if (response.statusCode != 200 && response.statusCode != 400) {
       try {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody = jsonDecode(response.data);
         debugPrint('$responseBody');
         if (responseBody['response_text'] != null) {
           throw ApiException(statusCode: response.statusCode, message: responseBody['response_text'] ?? '');
@@ -63,18 +75,13 @@ class Client {
           throw ApiException(statusCode: response.statusCode, message: 'Unknown error occurred');
         }
       } catch (err, stacktrace) {
-        debugPrint(response.body);
         throw ApiException(statusCode: response.statusCode, message: 'Unknown error occurred: $stacktrace');
       }
     }
-    return jsonDecode(response.body);
+    return jsonDecode(response.data);
   }
 
-  static Uri _composeApiTarget(String uri, {Map<String, dynamic>? body}) {
-    return Uri.http(baseUrl, '/' + uri, body);
-  }
-
-  static Uri _composeApiTargetWithFields(String uri, String fields, {Map<String, dynamic>? body}) {
-    return Uri.http(baseUrl, '/' + uri + '?' + fields, body);
+  static String _composeApiTarget(String uri) {
+    return baseUrl + '/' + uri;
   }
 }
