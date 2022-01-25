@@ -25,6 +25,9 @@ class AlbumCardView extends StatelessWidget {
         children: [
           Text(
             'Artist Name: ${album.artistName}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             'Genre: ${album.primaryGenreName}',
@@ -58,6 +61,9 @@ class AlbumCardView extends StatelessWidget {
               children: [
                 Text(
                   album.collectionName ?? '',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Row(
                   children: [
@@ -82,6 +88,7 @@ class AlbumCardView extends StatelessWidget {
                       icon: Icon(
                         favorite ? Icons.star
                             : Icons.star_border,
+                        color: Colors.blue,
                       ),
                     )
                   ],
