@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
-DateFormat dateFormat = DateFormat('yyyy-MM-ddThh:mm:ss.zzZ');
+DateFormat dateFormat = DateFormat('yyyy-MM-ddThh:mm:ssZ');
 
 class Album extends Equatable{
 
@@ -75,7 +75,7 @@ class Album extends Equatable{
       country: json['country'] as String?,
       currency: json['currency'] as String?,
       primaryGenreName: json['primaryGenreName'] as String?,
-      releaseDate: (json['releaseDate'] as String?) != '' ? dateFormat.parse(json['logDate']): null,
+      releaseDate: (json['releaseDate'] as String? ?? '') != '' ? dateFormat.parse(json['releaseDate']): null,
       artistType: json['artistType'] as String?,
       artistLinkUrl: json['artistLinkUrl'] as String?,
       primaryGenreId: json['primaryGenreId'] as num?,

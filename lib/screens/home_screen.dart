@@ -23,20 +23,25 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: const Text('Jack Johnson\'s Albums'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                '',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ],
-          ),
-        ),
+        body: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+          builder: (context, state) {
+            return state.status ? const Center(
+              child: CircularProgressIndicator(),
+            ): ListView.separated(
+              itemBuilder: (context, index) {
+                return Container(
+                  child: Text(
+                    state.albums[index].artistName ?? '',
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Container(height: 4,);
+              },
+              itemCount: state.albums.length,
+            );
+          },
+        )
       ),
     );
   }

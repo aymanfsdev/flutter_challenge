@@ -7,6 +7,6 @@ mixin LookupEndpoints {
   Future<Map<String, dynamic>> getAlbums() async {
     String target = _authPath.buildPath('');
 
-    return Client.unauthorizedRequest(ClientMethod.get, target, body: {'id': '909253', 'entity': 'album'});
+    return Client().unauthorizedRequest(ClientMethod.get, target, body: {'id': '909253', 'entity': 'album'});
   }
 }

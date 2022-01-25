@@ -11,7 +11,7 @@ enum ClientMethod { get }
 /// performs default behaviours such as JSON encoding
 /// of maps and the inclusion of auth headers automatically.
 class Client {
-  static late Dio _dio;
+  late Dio _dio;
   Client() {
     BaseOptions options = BaseOptions(
         baseUrl: baseUrl,
@@ -24,7 +24,7 @@ class Client {
 
   }
   /// The base URL for all API requests.
-  static String get baseUrl => config.apiBaseUri;
+  String get baseUrl => config.apiBaseUri;
 
   /// Sends an HTTP request with the declared [method] to [uri]
   /// and expects a JSON-encoded response which will be
@@ -32,7 +32,7 @@ class Client {
   /// which will be JSON-encoded.
   ///
   /// Throws `ApiException` if a non-200 response is received.
-  static Future<Map<String, dynamic>> unauthorizedRequest(
+  Future<Map<String, dynamic>> unauthorizedRequest(
       ClientMethod method,
       String uri,
       {Map<String, dynamic>? body}
@@ -51,7 +51,7 @@ class Client {
   /// other class methods which set [headers].
   ///
   /// Throws `ApiException` if a non-200 response is received.
-  static Future<Map<String, dynamic>> _sendRequest(ClientMethod method, String uri,
+  Future<Map<String, dynamic>> _sendRequest(ClientMethod method, String uri,
       Map<String, dynamic>? body, Map<String, String> headers) async {
     Response response;
     switch (method) {
@@ -81,7 +81,7 @@ class Client {
     return jsonDecode(response.data);
   }
 
-  static String _composeApiTarget(String uri) {
+  String _composeApiTarget(String uri) {
     return baseUrl + '/' + uri;
   }
 }
